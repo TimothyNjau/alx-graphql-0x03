@@ -1,7 +1,8 @@
 //Create an ErrorBoundary class component. It is stored in the components directory. 
 //It is implemented by extending the React.Component
 
-import React, { ReactNode } from "react"
+import React, { ReactNode } from "react";
+import * as Sentry from '@sentry/react';
 
 interface State {
     hasError: boolean
@@ -23,7 +24,8 @@ class ErrorBoundary extends React.Component< ErrorBoundaryProps, State> {
 
     //componentDidCatch is used to catch errors or exceptions generated in descendant components.
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-        console.log( error, errorInfo)
+        console.log( error, errorInfo);
+        Sentry.captureException(error, { extra: { ...errorInfo } });
     }
 
     render() {
